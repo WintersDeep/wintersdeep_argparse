@@ -43,7 +43,7 @@ setup(
     long_description_content_type = 'text/markdown',  # Optional (see note above)
 
     # Link to your project's main homepage.
-    # url = '',
+    url = 'https://github.com/wintersdeep/wintersdeep_argparse',
 
     # Name of the developer that made the project.
     author = 'WintersDeep',
