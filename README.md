@@ -25,6 +25,12 @@ for n in arguments.N:
     print( arguments.formatter(n) )
 ```
 
+## Installation
+
+```shell
+pip install wintersdeep.argparse
+```
+
 ## Features
 
 - Allows usage of `Mapping` type objects as a `choices` constraint on `ArgumentParser::add_argument`. Accepted input will be constrained to key values in the given map and the value in the resulting `Namespace` will be that keys associated value.
