@@ -1,0 +1,5 @@
+# python artifacts
+**/__pycache__
+*.egg-info/
+*.py[oc]
+/venv
