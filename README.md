@@ -1,6 +1,36 @@
 # Wintersdeep Argument Parser
 
-This is a small extension to the native Python3 `argparse.ArgumentParser`. It alters the behaviour of the `choices` argument on the `add_argument` method such that it supports the use of `Mapping` objects such as `dict`. 
+This is a small extension to the native Python3 `argparse.ArgumentParser`. It adds some functionality I find I always end up requiring.
+
+## Installation
+
+```shell
+pip install wintersdeep.argparse
+```
+
+## Log level support
+
+Often you want the user to be able to configure log levels, thats a pain in itself. Then when you select `debug` and get overwhelmed you realise you only want it on one or more loggers, and not all of them. Often this is done by tweaking the code to acheive what you need in the moment. This helps fix that by making adjusting log levels at the command line simple - take a look:
+
+```python
+from wintersdeep.argparse import ArgumentParser
+
+argument_parser = ArgumentParser()
+argument_parser.add_log_level_arguments() # there are options here, but the defaults will work fine.
+arguments = argument_parser.parse_args()
+if log_levels := arguments.log_level:
+    log_levels.apply()
+```
+
+A user can now type `-l[log-level]` to set the global/default log level, or `-l[logger]=[log-level]` to set a specific log level, or any mix of the two.
+
+```bash
+python3 -m path.to.app -lwarning -lpath.to.app.problematic=debug -lpath.to.app.suspect=info
+```
+
+## Mapping `choices` support.
+
+It alters the behaviour of the `choices` argument on the `add_argument` method such that it supports the use of `Mapping` objects such as `dict`. 
 
 When using a `Mapping` object as a `choices` constraint the user will be able to choose only from the keys of the `Mapping` object specified. The arguments value in the resulting `Namespace` will be that which is associated with the key in the provided Mapping - e.g. if the user specified the key _"abc"_ the value in the resulting namespace would be taken from `choices_mapping["abc"]`.
 
@@ -25,13 +55,7 @@ for n in arguments.N:
     print( arguments.formatter(n) )
 ```
 
-## Installation
-
-```shell
-pip install wintersdeep.argparse
-```
-
-## Features
+### Features
 
 - Allows usage of `Mapping` type objects as a `choices` constraint on `ArgumentParser::add_argument`. Accepted input will be constrained to key values in the given map and the value in the resulting `Namespace` will be that keys associated value.
 - Added a `default_key` keyword argument; you can specify either `default` or `default_key` but not both. When using `default_key` the default value will be the value associated with the specified `default_key` in the `choices` map. `default_key` allows you to ensure documentation and behaviour remain syncronised and readable. `default` can still be used as normal if preferred and is required when the default option should not be user selectable.
