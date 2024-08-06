@@ -5,13 +5,31 @@ from argparse import ArgumentParser as NativeArgumentParser, Action
 
 # project imports
 from wintersdeep.argparse.mapping_choices_action import MappingChoicesAction
-
+from wintersdeep.argparse.log_level_action import LogLevelAction
 
 
 ## Argument Parser with choices Mapping support.
 #  Extension of the native Python3 argparse.ArgumentParser which allows the
 #  use of mapping objects in 'choices' and related features.
 class ArgumentParser(NativeArgumentParser):
+
+    ## The default short name to use when calling @ref add_log_level_arguments
+    DefaultLogLevelShortName = "-l"
+
+    ## The default long name to use when calling @ref add_log_level_arguments
+    DefaultLogLevelLongName = "--log-level"
+
+    ## The default help message to show for logging level
+    #  @tbd improve this help and add documentation regards available log levels
+    DefaultLogLevelHelp = "Configure log levels either globally by setting a log-level alone, or for a specific logger using syntax log-name=log-level."
+
+    ## A list of keyword arguments we need to reject on called to @ref add_log_level_arguments
+    LogLevelReservedArguments = [
+            'action',
+            'nargs',
+            'type',
+            'choices'
+        ]
 
 
     ## Define how a single command-line argument should be parsed.
@@ -45,3 +63,25 @@ class ArgumentParser(NativeArgumentParser):
             kwargs['action'] = MappingChoicesAction
 
         return super().add_argument(*args, **kwargs)
+
+
+    ## Adds a log level argument to the argument parser.
+    #  @remarks all arguments passed to this are identical to those passed
+    #    by add_arguments except some may be protected.
+    #  @returns the action created by this method call.
+    def add_log_level_arguments(self, *name_or_flags:str, **kwargs:dict[str, Any]) -> Action:
+        
+        name_or_flags = name_or_flags or [ 
+            self.DefaultLogLevelShortName,
+            self.DefaultLogLevelLongName 
+        ]
+        
+        for reserved_kwarg in self.LogLevelReservedArguments:
+            if reserved_kwarg in kwargs:
+                raise KeyError(f"Cannot specify {reserved_kwarg} when using add_log_level_arguments.")
+        
+        kwargs.setdefault("help", self.DefaultLogLevelHelp)
+        kwargs['action'] = LogLevelAction
+        kwargs['type'] = str
+
+        return self.add_argument(*name_or_flags, **kwargs)

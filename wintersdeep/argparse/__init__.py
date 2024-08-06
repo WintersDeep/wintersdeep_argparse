@@ -15,11 +15,15 @@ __status__      =   "Production"
 # project imports
 from wintersdeep.argparse.argument_parser import ArgumentParser
 from wintersdeep.argparse.mapping_choices_action import MappingChoicesAction
+from wintersdeep.argparse.logging_configuration import LogLevelConfiguration
+from wintersdeep.argparse.log_level_action import LogLevelAction
 
 ## 'wintersdeep.argparse' module wildcard imports
 __all__ = [
     "ArgumentParser",
-    "MappingChoicesAction"
+    "MappingChoicesAction",
+    "LogConfiguration",
+    "LogLevelAction"
 ]
 
 
