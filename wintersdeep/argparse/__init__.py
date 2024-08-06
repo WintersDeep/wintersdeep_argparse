@@ -2,10 +2,10 @@
 __summary__ = "Extends the native Python3 `argparse.ArgumentParser` to supports using maps as a `choices` argument type."
 
 __author__      =    "WintersDeep"
-__copyright__   =    "Copyright 2020, WintersDeep.com"
+__copyright__   =    "Copyright 2024, WintersDeep.com"
 
 __license__     =    "MIT"
-__version__     =    "1.0.1"
+__version__     =    "1.1.4"
 __credits__     =    [ ]
 
 __maintainer__  =   "WintersDeep.com"
